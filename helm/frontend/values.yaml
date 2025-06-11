@@ -1,0 +1,9 @@
+replicaCount: 2
+
+image:
+  repository: abimbola1994/react-frontend
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80

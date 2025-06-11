@@ -1,0 +1,11 @@
+replicaCount: 2
+
+image:
+  repository: abimbola1994/java-backend
+  tag: latest
+  imagePullPolicy: Always
+
+service:
+  type: ClusterIP
+  name: java-backend
+  port: 8080
