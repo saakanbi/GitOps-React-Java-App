@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/saakanbi/GitOps-React-Java-App.git
-    targetRevision: HEAD
+    targetRevision: dev-wole
     path: helm/backend
   destination:
     server: https://kubernetes.default.svc
