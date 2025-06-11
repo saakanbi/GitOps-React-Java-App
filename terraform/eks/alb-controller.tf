@@ -11,34 +11,14 @@ module "aws_load_balancer_controller_irsa_role" {
       namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
     }
   }
-}
 
-resource "helm_release" "aws_load_balancer_controller" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  version    = "1.6.0"
+  policy_name = "CustomALBControllerPolicy"
 
-  set {
-    name  = "clusterName"
-    value = module.eks.cluster_name
+  policy_statements = {
+    custom = {
+      effect    = "Allow"
+      actions   = ["elasticloadbalancing:AddTags"]
+      resources = ["*"]
+    }
   }
-
-  set {
-    name  = "serviceAccount.create"
-    value = "true"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
-
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.aws_load_balancer_controller_irsa_role.iam_role_arn
-  }
-
-  depends_on = [module.eks]
 }
