@@ -4,7 +4,7 @@ resource "helm_release" "prometheus" {
   chart            = "kube-prometheus-stack"
   namespace        = "monitoring"
   create_namespace = true
-  version          = "51.2.0"  # Use the latest stable version
+  version          = "51.2.0" # Use the latest stable version
 
   set {
     name  = "grafana.enabled"

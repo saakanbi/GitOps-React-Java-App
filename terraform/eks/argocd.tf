@@ -4,7 +4,7 @@ resource "helm_release" "argocd" {
   chart            = "argo-cd"
   namespace        = "argocd"
   create_namespace = true
-  version          = "5.46.7"  # Use the latest stable version
+  version          = "5.46.7" # Use the latest stable version
 
   values = [<<EOF
 server:
