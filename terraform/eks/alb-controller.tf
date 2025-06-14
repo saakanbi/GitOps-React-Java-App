@@ -16,20 +16,20 @@ resource "aws_iam_policy" "alb_add_tags" {
   })
 }
 
-
-
-
-
+# -----------------------------
+# IAM Role for Service Account (IRSA)
+# -----------------------------
 module "aws_load_balancer_controller_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.30.0"
 
-  role_name                              = "aws-load-balancer-controller"
-  attach_load_balancer_controller_policy = true
+  role_name                               = "aws-load-balancer-controller"
+  attach_load_balancer_controller_policy  = true
 
-  role_policy_arns = [
-    aws_iam_policy.alb_add_tags.arn
-  ]
+  # 🔧 FIXED: map of strings, not list
+  role_policy_arns = {
+    alb_add_tags = aws_iam_policy.alb_add_tags.arn
+  }
 
   oidc_providers = {
     main = {
@@ -39,7 +39,9 @@ module "aws_load_balancer_controller_irsa_role" {
   }
 }
 
-
+# -----------------------------
+# Deploy AWS Load Balancer Controller via Helm
+# -----------------------------
 resource "helm_release" "aws_load_balancer_controller" {
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
